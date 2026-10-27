@@ -22,12 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.app_carabineros.data.UsuarioRepository
 
 @Composable
 fun PantallaLogin(){
     val contexto = LocalContext.current
     var rut by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
+    var mensajeError by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -59,20 +61,40 @@ fun PantallaLogin(){
         Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = {
-                // Navega a la pantalla principal
-                val intent = Intent(contexto, PrincipalActivity::class.java)
-                contexto.startActivity(intent)
+                val esValido = com.example.app_carabineros.data.UsuarioRepository.validarLogin(rut.trim(), contrasena.trim())
 
-                // Cierra la pantalla de Login actual
-                (contexto as? android.app.Activity)?.finish()
+
+                if(esValido){
+                    mensajeError = ""
+                    val intent = Intent(contexto, PrincipalActivity::class.java)
+                    contexto.startActivity(intent)
+
+                    (contexto as? LoginActivity)?.finish()
+                }else{
+                    //Si es falso, mostramos un mensaje de error.
+                    mensajeError = "Rut o contraseña incorrectos"
+                }
+
+
             },
             modifier = Modifier.fillMaxWidth()
         ){
             Text("Ingresar")
         }
+        //Mensaje de error al Ingresar los datos incorrectos
+        if (mensajeError.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = mensajeError,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
         TextButton(onClick = {
-            // Navegar a la pantalla de registro
+            val intent = Intent(contexto, RegistroActivity::class.java)
+            contexto.startActivity(intent)
         }) {
             Text("Registrarse")
         }
