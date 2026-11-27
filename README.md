@@ -1,48 +1,47 @@
 # App Carabineros (ESFOCAR)
 
-Aplicación móvil Android desarrollada en **Kotlin** con **Jetpack Compose** y **Material 3** para la gestión operativa de usuarios y documentos en el contexto del proyecto EFT (**ESFOCAR**). Integra consumo de servicios backend en **Render** con **PostgreSQL**, respaldo local con **Room**, consumo de APIs externas, pruebas unitarias y compilación firmada en modo `release`.
+Aplicación Android creada en Kotlin y Jetpack Compose (Material 3) para el proyecto EFT de ESFOCAR. Permite gestionar usuarios y documentos de apoyo formativo, sincronizar datos con un servidor backend en Render y base de datos PostgreSQL, mantener respaldo local en Room y consultar APIs externas.
 
-## Estructura del Proyecto
+## ¿Qué hace la aplicación?
 
-Paquete principal `com.example.app_carabineros`:
+- **Inicio de sesión y registro:** Permite crear cuenta y entrar a la app, combinando validación con el backend en Render y respaldo local en Room.
+- **Gestión de documentos:** Permite crear, buscar, leer y eliminar apuntes o normativas policiales, además de adjuntar archivos PDF o imágenes desde el teléfono y abrirlos.
+- **Respaldo local y sincronización:** Guarda información en la base de datos local (`Room`) para que siga disponible y se sincronice con el servidor.
+- **Servicios externos:** Consume endpoints desplegados en Render y APIs externas según el flujo de la aplicación.
+- **Pruebas unitarias:** Incluye pruebas con JUnit 4 en `app/src/test` para verificar los modelos de datos (`ModelosUnitTest`).
 
-- **`data/`**: repositorios y base de datos local con **Room**.
-- **`model/`**: modelos de datos y entidades.
-- **`navegacion/`**: rutas y navegación entre vistas.
-- **`network/`**: clientes **Retrofit** y servicios de red (backend en Render y APIs externas).
-- **`ui.theme/`**: tema y estilos de **Material 3**.
-- **`vistas/`**: pantallas en Jetpack Compose, formularios validados y estado de UI.
-- **`MainActivity`**: punto de entrada de la app.
-- **`test/`**: pruebas unitarias (`app/src/test`).
-- **`keepRules/rules.keep`**: reglas para compilación `release`.
+## Rutas y servicios que usa la app
 
-## Configuración y Ejecución
+- **Backend en Render:** Endpoints REST para gestión de usuarios y documentos (creación, consulta, login/registro y eliminación).
+- **APIs externas:** Servicios externos consultados desde la capa `network` con Retrofit.
+- **Base de datos local (Room):** Tablas `usuarios` y `documentos` en la base local del dispositivo.
 
-### Requisitos previos
-- **Android Studio** con Android SDK y `build-tools` (`36.0.0`).
-- Conexión a internet para servicios en **Render** y APIs externas.
-- Emulador o dispositivo Android con **Depuración USB** activada.
+## ¿Cómo ejecutar la app?
 
-### Ejecutar la app
-1. Abre el proyecto en **Android Studio** y espera la sincronización de Gradle.
+### Requisitos
+- Android Studio con Android SDK y `build-tools` `36.0.0`.
+- Conexión a internet para Render y APIs externas.
+- Emulador o teléfono Android con depuración USB activada.
+
+### Pasos para correr
+1. Abre el proyecto en Android Studio y espera que termine la sincronización de Gradle.
 2. Selecciona el emulador o dispositivo en la barra superior.
-3. Haz clic en **Run**.
+3. Presiona **Run**.
 
 ### Pruebas unitarias
-Ejecuta los tests desde Android Studio sobre `app/src/test` o en terminal:
+Se ejecutan desde Android Studio en `app/src/test` o desde la terminal con:
 
 ```powershell
 .\gradlew.bat test
 ```
 
-## APK Firmado (`release`) y Verificación
+## APK firmado (`release`) y verificación
 
-1. En Android Studio: **Build → Generate Signed App Bundle or APK → APK**.
-2. Selecciona tu keystore (`esfocar.jks`), ingresa las credenciales, elige la variante **`release`** y compila.
-3. El APK queda en `app/build/outputs/apk/release/app-release.apk`.
+1. En Android Studio: **Build -> Generate Signed App Bundle or APK -> APK**.
+2. Selecciona `esfocar.jks`, ingresa las credenciales, elige `release` y genera el APK.
+3. El archivo se crea en `app/build/outputs/apk/release/app-release.apk`.
 
-### Verificar firma con `apksigner`
-En PowerShell, entra a `build-tools\36.0.0` y ejecuta (reemplazando `<ruta-del-apk>` por la ruta local de tu archivo):
+Para verificar la firma en PowerShell (reemplazando `<ruta-del-apk>` por la ruta en tu equipo):
 
 ```powershell
 cd "$env:LOCALAPPDATA\Android\Sdk\build-tools\36.0.0"
