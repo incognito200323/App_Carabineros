@@ -1,6 +1,7 @@
 package com.example.app_carabineros
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,7 @@ import com.example.app_carabineros.data.AppDatabase
 import com.example.app_carabineros.data.DocumentoRepository
 import com.example.app_carabineros.data.UsuarioRepository
 import com.example.app_carabineros.navegacion.AppNavigation
+import com.example.app_carabineros.network.RetrofitClient
 import com.example.app_carabineros.vistas.FondoApp
 import com.example.app_carabineros.vistas.VerdeEsfocar
 import com.example.app_carabineros.vistas.VerdeEsfocarOscuro
